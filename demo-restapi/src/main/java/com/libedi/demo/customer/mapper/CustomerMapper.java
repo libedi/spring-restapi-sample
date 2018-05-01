@@ -12,5 +12,11 @@ public interface CustomerMapper {
 
 	List<Customer> selectCustomerList(@Nullable Integer customerId);
 
+	void insertCustomer(Customer customer);
 
+	void updateCustomer(Customer customer);
+
+	void deleteCustomer(Integer customerId);
+	
+	
 }

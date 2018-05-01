@@ -1,5 +1,6 @@
 package com.libedi.demo.customer.mapper;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -14,6 +15,7 @@ import org.junit.runners.MethodSorters;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.CollectionUtils;
 
 import com.libedi.demo.customer.model.Customer;
 
@@ -46,6 +48,31 @@ public class CustomerMapperTest {
 		List<Customer> customerList = this.customerMapper.selectCustomerList(null);
 		assertNotNull(customerList);
 		assertFalse(customerList.isEmpty());
+	}
+	
+	@Test
+	public void test03_insertCustomer() throws Exception {
+		Customer newCustomer = new Customer();
+		newCustomer.setCompany("Kakao");
+		newCustomer.setCustomerName("Sangjun,Park");
+		this.customerMapper.insertCustomer(newCustomer);
+	}
+	
+	@Test
+	public void test04_updateCustomer() throws Exception {
+		Customer customer = new Customer(1, "Sangjun,Park", "SK C&C");
+		this.customerMapper.updateCustomer(customer);
+		Customer updateCustomer = this.customerMapper.selectCustomerList(1).get(0);
+		assertEquals(customer.getCustomerName(), updateCustomer.getCustomerName());
+		assertEquals(customer.getCompany(), updateCustomer.getCompany());
+	}
+	
+	@Test
+	public void test05_deleteCustomer() throws Exception {
+		Integer customerId = 1;
+		this.customerMapper.deleteCustomer(customerId);
+		List<Customer> customerList = this.customerMapper.selectCustomerList(customerId);
+		assertTrue(CollectionUtils.isEmpty(customerList));
 	}
 	
 }

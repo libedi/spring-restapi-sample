@@ -16,4 +16,35 @@
         </where>
     </select>
     
+    <!-- Insert Customer -->
+    <insert id="insertCustomer" parameterType="com.libedi.demo.customer.model.Customer">
+    	INSERT INTO CUSTOMER(
+    		CUSTOMER_NAME
+            , COMPANY
+    	) VALUES (
+    		#{customerName}
+    		, #{company}
+    	)
+    </insert>
+    
+    <!-- Update Customer -->
+    <update id="updateCustomer" parameterType="com.libedi.demo.customer.model.Customer">
+    	UPDATE CUSTOMER
+    	<set>
+    		<if test="customerName != ''">
+    		CUSTOMER_NAME = #{customerName}
+    		</if>
+    		<if test="company != ''">
+    		, COMPANY = #{company}
+    		</if>
+    	</set>
+    	WHERE CUSTOMER_ID = #{customerId}
+    </update>
+    
+    <!-- Delete Customer -->
+    <delete id="deleteCustomer" parameterType="int">
+    	DELETE FROM CUSTOMER
+    	WHERE CUSTOMER_ID = #{_parameter}
+    </delete>
+    
 </mapper>
