@@ -91,7 +91,7 @@ public class CustomerController {
 		this.customerService.getCustomer(customerId).orElseThrow(ResourceNotFoundException::new);
 		customer.setCustomerId(customerId);
 		this.customerService.updateCustomer(customer);
-		return customer;
+		return this.customerService.getCustomer(customerId).orElseThrow(ResourceNotFoundException::new);
 	}
 
 	/**

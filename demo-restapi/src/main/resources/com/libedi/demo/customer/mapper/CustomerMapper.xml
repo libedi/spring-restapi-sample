@@ -33,10 +33,10 @@
     <update id="updateCustomer" parameterType="com.libedi.demo.customer.model.Customer">
     	UPDATE CUSTOMER
     	<set>
-    		<if test="customerName != ''">
+    		<if test="customerName != null and customerName != ''">
     		CUSTOMER_NAME = #{customerName}
     		</if>
-    		<if test="company != ''">
+    		<if test="company != null and company != ''">
     		, COMPANY = #{company}
     		</if>
     	</set>
