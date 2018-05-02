@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.util.WebUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.libedi.demo.common.model.ErrorResponse;
@@ -35,11 +36,10 @@ public class DemoRestapiApplication {
 			@SuppressWarnings("unchecked")
 			@Override
 			public Map<String, Object> getErrorAttributes(WebRequest webRequest, boolean includeStackTrace) {
-				Integer status = (Integer) webRequest.getAttribute("javax.servlet.error.status_code",
+				Integer status = (Integer) webRequest.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE,
 						RequestAttributes.SCOPE_REQUEST);
 				return objectMapper.convertValue(
-						new ErrorResponse(
-								status == null ? "None" : HttpStatus.valueOf(status).getReasonPhrase(), ""),
+						new ErrorResponse(status == null ? "None" : HttpStatus.valueOf(status).getReasonPhrase(), ""),
 						Map.class);
 			}
 		};

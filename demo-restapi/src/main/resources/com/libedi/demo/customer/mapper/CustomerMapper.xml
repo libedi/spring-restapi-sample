@@ -19,10 +19,12 @@
     <!-- Insert Customer -->
     <insert id="insertCustomer" parameterType="com.libedi.demo.customer.model.Customer">
     	INSERT INTO CUSTOMER(
-    		CUSTOMER_NAME
+    		CUSTOMER_ID
+            , CUSTOMER_NAME
             , COMPANY
     	) VALUES (
-    		#{customerName}
+    	    #{customerId}
+    		, #{customerName}
     		, #{company}
     	)
     </insert>

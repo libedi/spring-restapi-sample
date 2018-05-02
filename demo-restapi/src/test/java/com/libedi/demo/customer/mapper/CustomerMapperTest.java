@@ -53,6 +53,7 @@ public class CustomerMapperTest {
 	@Test
 	public void test03_insertCustomer() throws Exception {
 		Customer newCustomer = new Customer();
+		newCustomer.setCustomerId(2);
 		newCustomer.setCompany("Kakao");
 		newCustomer.setCustomerName("Sangjun,Park");
 		this.customerMapper.insertCustomer(newCustomer);

@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
+	@NotEmpty(groups = Create.class)
 	private Integer customerId;
 	@NotEmpty(groups = Create.class)
 	private String customerName;

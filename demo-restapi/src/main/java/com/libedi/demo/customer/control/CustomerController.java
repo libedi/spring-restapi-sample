@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.libedi.demo.common.exception.ResourceConflictException;
 import com.libedi.demo.customer.model.Customer;
 import com.libedi.demo.customer.service.CustomerService;
 import com.libedi.demo.framework.model.ValidMarker.Create;
@@ -39,7 +40,7 @@ public class CustomerController {
 	}
 
 	/**
-	 * 
+	 * get Customer
 	 * @param customerId
 	 * @return
 	 */
@@ -50,7 +51,7 @@ public class CustomerController {
 	}
 
 	/**
-	 * 
+	 * get Customers
 	 * @return
 	 */
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -64,17 +65,20 @@ public class CustomerController {
 	}
 
 	/**
-	 * 
+	 * create Customer
 	 * @param customer
 	 */
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createCustomer(@RequestBody @Validated(Create.class) final Customer customer) {
+		this.customerService.getCustomer(customer.getCustomerId()).ifPresent(c -> {
+			throw new ResourceConflictException();
+		});
 		this.customerService.createCustomer(customer);
 	}
 
 	/**
-	 * 
+	 * update Customer
 	 * @param customerId
 	 * @param customer
 	 * @return
@@ -91,7 +95,7 @@ public class CustomerController {
 	}
 
 	/**
-	 * 
+	 * delete Customer
 	 * @param customerId
 	 */
 	@DeleteMapping(path = "/{id}")
