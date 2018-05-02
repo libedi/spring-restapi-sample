@@ -45,7 +45,7 @@ public class CustomerController {
 	 */
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Customer getCustomer(@PathVariable("id") int customerId) {
+	public Customer getCustomer(@PathVariable("id") final int customerId) {
 		return this.customerService.getCustomer(customerId).orElseThrow(ResourceNotFoundException::new);
 	}
 
@@ -56,7 +56,7 @@ public class CustomerController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Customer> getCustomerList() {
-		List<Customer> customerList = this.customerService.getCustomerList();
+		final List<Customer> customerList = this.customerService.getCustomerList();
 		if(CollectionUtils.isEmpty(customerList)) {
 			throw new ResourceNotFoundException();
 		}
@@ -69,7 +69,7 @@ public class CustomerController {
 	 */
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public void createCustomer(@RequestBody @Validated(Create.class) Customer customer) {
+	public void createCustomer(@RequestBody @Validated(Create.class) final Customer customer) {
 		this.customerService.createCustomer(customer);
 	}
 
@@ -83,7 +83,7 @@ public class CustomerController {
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Customer updateCustomer(@PathVariable("id") Integer customerId, @RequestBody Customer customer) {
+	public Customer updateCustomer(@PathVariable("id") final Integer customerId, @RequestBody final Customer customer) {
 		this.customerService.getCustomer(customerId).orElseThrow(ResourceNotFoundException::new);
 		customer.setCustomerId(customerId);
 		this.customerService.updateCustomer(customer);
@@ -96,7 +96,7 @@ public class CustomerController {
 	 */
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteCustomer(@PathVariable("id") Integer customerId) {
+	public void deleteCustomer(@PathVariable("id") final Integer customerId) {
 		this.customerService.deleteCustomer(customerId);
 	}
 	

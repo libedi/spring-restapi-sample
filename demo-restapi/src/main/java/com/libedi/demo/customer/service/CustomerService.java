@@ -29,24 +29,40 @@ public class CustomerService {
 	 * @param customerId
 	 * @return
 	 */
-	public Optional<Customer> getCustomer(Integer customerId) {
-		return Optional.ofNullable(customerMapper.selectCustomerList(customerId).get(0));
+	public Optional<Customer> getCustomer(final Integer customerId) {
+		return this.customerMapper.selectCustomerList(customerId).stream().findFirst();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public List<Customer> getCustomerList() {
-		return null;
+		return this.customerMapper.selectCustomerList(null);
 	}
 
-	public void createCustomer(Customer customer) {
-		
+	/**
+	 * 
+	 * @param customer
+	 */
+	public void createCustomer(final Customer customer) {
+		this.customerMapper.insertCustomer(customer);
 	}
 
-	public void updateCustomer(Customer customer) {
-		
+	/**
+	 * 
+	 * @param customer
+	 */
+	public void updateCustomer(final Customer customer) {
+		this.customerMapper.updateCustomer(customer);
 	}
 
-	public void deleteCustomer(Integer customerId) {
-		
+	/**
+	 * 
+	 * @param customerId
+	 */
+	public void deleteCustomer(final Integer customerId) {
+		this.customerMapper.deleteCustomer(customerId);
 	}
 
 }
