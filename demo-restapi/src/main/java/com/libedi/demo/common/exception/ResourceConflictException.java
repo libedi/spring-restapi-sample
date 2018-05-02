@@ -10,7 +10,7 @@ public class ResourceConflictException extends RuntimeException {
 	private static final long serialVersionUID = -1633639347587897831L;
 
 	public ResourceConflictException() {
-		super();
+		super("Resource Conflict!");
 	}
 
 	public ResourceConflictException(String message, Throwable cause, boolean enableSuppression,

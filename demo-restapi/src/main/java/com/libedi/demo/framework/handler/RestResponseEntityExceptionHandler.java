@@ -56,12 +56,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	 * @return ResponseEntity
 	 */
 	@ExceptionHandler(IllegalArgumentException.class)
-	protected ResponseEntity<Object> handleBadRequest(IllegalArgumentException ex, HttpHeaders headers,
-			WebRequest request) {
+	protected ResponseEntity<Object> handleBadRequest(IllegalArgumentException ex, WebRequest request) {
 		logger.error(ex.getMessage(), ex);
 		return super.handleExceptionInternal(ex,
-				new ErrorResponse(StringUtils.hasLength(ex.getMessage()) ? ex.getMessage() : "Bad Request"), headers,
-				HttpStatus.BAD_REQUEST, request);
+				new ErrorResponse(StringUtils.hasLength(ex.getMessage()) ? ex.getMessage() : "Bad Request"),
+				new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 	
 	/**
@@ -72,11 +71,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	 * @return ResponseEntity
 	 */
 	@ExceptionHandler({ ResourceNotFoundException.class, FileNotFoundException.class })
-	protected ResponseEntity<Object> handleNotFound(Exception ex, HttpHeaders headers, WebRequest request) {
+	protected ResponseEntity<Object> handleNotFound(Exception ex, WebRequest request) {
 		logger.error(ex.getMessage(), ex);
 		return super.handleExceptionInternal(ex,
-				new ErrorResponse(StringUtils.hasLength(ex.getMessage()) ? ex.getMessage() : "Not Found"), headers,
-				HttpStatus.NOT_FOUND, request);
+				new ErrorResponse(StringUtils.hasLength(ex.getMessage()) ? ex.getMessage() : "Not Found"),
+				new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
 	/**
@@ -87,12 +86,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	 * @return ResponseEntity
 	 */
 	@ExceptionHandler(ResourceConflictException.class)
-	protected ResponseEntity<Object> handleConflict(ResourceConflictException ex, HttpHeaders headers,
-			WebRequest request) {
+	protected ResponseEntity<Object> handleConflict(ResourceConflictException ex, WebRequest request) {
 		logger.error(ex.getMessage(), ex);
 		return super.handleExceptionInternal(ex,
-				new ErrorResponse(StringUtils.hasLength(ex.getMessage()) ? ex.getMessage() : "Conflict"), headers,
-				HttpStatus.CONFLICT, request);
+				new ErrorResponse(StringUtils.hasLength(ex.getMessage()) ? ex.getMessage() : "Conflict"),
+				new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
 	
 	/**
@@ -103,12 +101,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	 * @return
 	 */
 	@ExceptionHandler(DataAccessException.class)
-	protected ResponseEntity<Object> handleDataAccessError(DataAccessException ex, HttpHeaders headers,
-			WebRequest request) {
+	protected ResponseEntity<Object> handleDataAccessError(DataAccessException ex, WebRequest request) {
 		logger.error(ex.getMessage(), ex);
 		return super.handleExceptionInternal(ex,
 				new ErrorResponse(StringUtils.hasLength(ex.getMessage()) ? ex.getMessage() : "Internal Server Error"),
-				headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
+				new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
 	}
 	
 	/**
@@ -119,14 +116,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	 * @return
 	 */
 	@ExceptionHandler({ HttpClientErrorException.class, HttpServerErrorException.class })
-	protected ResponseEntity<Object> handleHttpError(HttpStatusCodeException ex, HttpHeaders headers,
-			WebRequest request) {
+	protected ResponseEntity<Object> handleHttpError(HttpStatusCodeException ex, WebRequest request) {
 		logger.error("HTTP ERROR STATUS : {} - {}", ex.getStatusCode(), ex.getStatusText());
 		logger.error("HTTP ERROR BODY : {}", ex.getResponseBodyAsString(), ex);
 		return super.handleExceptionInternal(ex,
 				new ErrorResponse(
 						StringUtils.hasLength(ex.getStatusText()) ? ex.getStatusText() : "Internal Server Error"),
-				headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
+				new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
 	}
 	
 	/**
@@ -137,12 +133,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	 * @return
 	 */
 	@ExceptionHandler(RestClientException.class)
-	protected ResponseEntity<Object> handleRestClientError(RestClientException ex, HttpHeaders headers,
-			WebRequest request) {
+	protected ResponseEntity<Object> handleRestClientError(RestClientException ex, WebRequest request) {
 		logger.error("REST CLIENT ERROR : {}", ex.getMessage(), ex);
 		return super.handleExceptionInternal(ex,
 				new ErrorResponse(StringUtils.hasLength(ex.getMessage()) ? ex.getMessage() : "Internal Server Error"),
-				headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
+				new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
 	}
 	
 	/**
@@ -153,11 +148,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	 * @return
 	 */
 	@ExceptionHandler(Exception.class)
-	protected ResponseEntity<Object> handleInternalServerError(Exception ex, HttpHeaders headers, WebRequest request) {
+	protected ResponseEntity<Object> handleInternalServerError(Exception ex, WebRequest request) {
 		logger.error(ex.getMessage(), ex);
 		return super.handleExceptionInternal(ex,
 				new ErrorResponse(StringUtils.hasLength(ex.getMessage()) ? ex.getMessage() : "Internal Server Error"),
-				headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
+				new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
 	}
 
 }

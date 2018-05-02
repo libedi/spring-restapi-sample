@@ -39,7 +39,7 @@ public class DemoRestapiApplication {
 				Integer status = (Integer) webRequest.getAttribute(WebUtils.ERROR_STATUS_CODE_ATTRIBUTE,
 						RequestAttributes.SCOPE_REQUEST);
 				return objectMapper.convertValue(
-						new ErrorResponse(status == null ? "None" : HttpStatus.valueOf(status).getReasonPhrase(), ""),
+						new ErrorResponse(status == null ? "None" : HttpStatus.valueOf(status).getReasonPhrase()),
 						Map.class);
 			}
 		};

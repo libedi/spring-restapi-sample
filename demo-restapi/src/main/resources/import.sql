@@ -7,9 +7,11 @@ CREATE TABLE CUSTOMER(
 );
 
 INSERT INTO CUSTOMER(
-  CUSTOMER_NAME
+  CUSTOMER_ID
+  , CUSTOMER_NAME
   , COMPANY
 ) VALUES (
-  'libedi'
+  1
+  , 'libedi'
   , 'Freelancer'
 );
