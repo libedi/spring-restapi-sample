@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -102,8 +102,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	 * @param request
 	 * @return
 	 */
-	@ExceptionHandler(ResourceAccessException.class)
-	protected ResponseEntity<Object> handleResourceAccessError(ResourceAccessException ex, HttpHeaders headers,
+	@ExceptionHandler(DataAccessException.class)
+	protected ResponseEntity<Object> handleDataAccessError(DataAccessException ex, HttpHeaders headers,
 			WebRequest request) {
 		logger.error(ex.getMessage(), ex);
 		return super.handleExceptionInternal(ex,
