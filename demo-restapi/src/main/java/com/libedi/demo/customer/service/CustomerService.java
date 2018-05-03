@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.libedi.demo.customer.mapper.CustomerMapper;
 import com.libedi.demo.customer.model.Customer;
@@ -20,12 +21,12 @@ public class CustomerService {
 	private final CustomerMapper customerMapper;
 	
 	@Autowired
-	public CustomerService(CustomerMapper customerMapper) {
+	public CustomerService(final CustomerMapper customerMapper) {
 		this.customerMapper = customerMapper;
 	}
 
 	/**
-	 * 
+	 * get customer
 	 * @param customerId
 	 * @return
 	 */
@@ -34,7 +35,7 @@ public class CustomerService {
 	}
 
 	/**
-	 * 
+	 * get customer list
 	 * @return
 	 */
 	public List<Customer> getCustomerList() {
@@ -42,26 +43,29 @@ public class CustomerService {
 	}
 
 	/**
-	 * 
+	 * create customer
 	 * @param customer
 	 */
+	@Transactional
 	public void createCustomer(final Customer customer) {
 		this.customerMapper.insertCustomer(customer);
 	}
 
 	/**
-	 * 
+	 * update customer
 	 * @param customer
 	 */
+	@Transactional
 	public void updateCustomer(final Customer customer) {
 		this.customerMapper.updateCustomer(customer);
 	}
 
 	/**
-	 * 
+	 * delete customer
 	 * @param customerId
 	 */
-	public void deleteCustomer(final Integer customerId) {
+	@Transactional
+	public void deleteCustomer(final int customerId) {
 		this.customerMapper.deleteCustomer(customerId);
 	}
 

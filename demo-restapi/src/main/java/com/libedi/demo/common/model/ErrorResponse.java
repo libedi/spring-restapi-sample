@@ -15,16 +15,15 @@ import lombok.ToString;
  * @author Sangjun, Park
  *
  */
-@EqualsAndHashCode
-@ToString
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 @JsonInclude(Include.NON_NULL)
 public class ErrorResponse {
 	
-	@Getter @Setter
 	private String errorField;
-	@Getter @Setter
 	private String errorMessage;
 	
 	public ErrorResponse(String errorMessage) {

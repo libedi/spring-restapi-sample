@@ -17,7 +17,7 @@ public class RestTemplateConfig {
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplateBuilder()
-				.requestFactory(HttpComponentsClientHttpRequestFactory.class)
+				.requestFactory(HttpComponentsClientHttpRequestFactory.class)	// for using PATCH method
 				.setReadTimeout(1000 * 10)	// 10 seconds
 				.setConnectTimeout(1000 * 10)	// 10 seconds
 				.build();

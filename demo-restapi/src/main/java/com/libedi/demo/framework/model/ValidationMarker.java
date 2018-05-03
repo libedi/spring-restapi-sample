@@ -1,11 +1,11 @@
 package com.libedi.demo.framework.model;
 
 /**
- * For @Validated marker
+ * Validation Marker for using @Validated annotation
  * @author Sangjun, Park
  *
  */
-public interface ValidMarker {
+public interface ValidationMarker {
 	interface Create{};
 	interface Retrieve{};
 	interface Update{};

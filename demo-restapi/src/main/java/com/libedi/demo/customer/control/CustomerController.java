@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.libedi.demo.common.exception.ResourceConflictException;
 import com.libedi.demo.customer.model.Customer;
 import com.libedi.demo.customer.service.CustomerService;
-import com.libedi.demo.framework.model.ValidMarker.Create;
+import com.libedi.demo.framework.model.ValidationMarker.Create;
+import com.libedi.demo.framework.model.ValidationMarker.Update;
 
 /**
  * CustomerController for REST API
@@ -35,7 +36,7 @@ public class CustomerController {
 	private final CustomerService customerService;
 	
 	@Autowired
-	public CustomerController(CustomerService customerService) {
+	public CustomerController(final CustomerService customerService) {
 		this.customerService = customerService;
 	}
 
@@ -87,11 +88,12 @@ public class CustomerController {
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public Customer updateCustomer(@PathVariable("id") final Integer customerId, @RequestBody final Customer customer) {
+	public Customer updateCustomer(@PathVariable("id") final int customerId,
+			@RequestBody @Validated(Update.class) final Customer customer) {
 		this.customerService.getCustomer(customerId).orElseThrow(ResourceNotFoundException::new);
 		customer.setCustomerId(customerId);
 		this.customerService.updateCustomer(customer);
-		return this.customerService.getCustomer(customerId).orElseThrow(ResourceNotFoundException::new);
+		return this.customerService.getCustomer(customerId).get();
 	}
 
 	/**
@@ -100,7 +102,7 @@ public class CustomerController {
 	 */
 	@DeleteMapping(path = "/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteCustomer(@PathVariable("id") final Integer customerId) {
+	public void deleteCustomer(@PathVariable("id") final int customerId) {
 		this.customerService.deleteCustomer(customerId);
 	}
 	

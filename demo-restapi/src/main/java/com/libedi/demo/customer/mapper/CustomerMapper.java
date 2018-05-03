@@ -7,6 +7,11 @@ import org.springframework.lang.Nullable;
 
 import com.libedi.demo.customer.model.Customer;
 
+/**
+ * CustomerMapper
+ * @author Sangjun, Park
+ *
+ */
 @Mapper
 public interface CustomerMapper {
 
@@ -17,6 +22,5 @@ public interface CustomerMapper {
 	void updateCustomer(Customer customer);
 
 	void deleteCustomer(Integer customerId);
-	
 	
 }
