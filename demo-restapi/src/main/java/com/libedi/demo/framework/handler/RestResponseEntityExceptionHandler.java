@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -30,6 +31,11 @@ import com.libedi.demo.common.model.ErrorResponse;
  * @author Sangjun, Park
  *
  */
+/*
+ * ResponseEntityExceptionHandler를 상속받지 않고, @RestControllerAdvice를 사용할 수도 있다.
+ * 이때는 반환값이 ResponseEntity<Object>가 아니라, ErrorResponse 객체를 반환하면 된다.
+ */
+//@RestControllerAdvice
 @ControllerAdvice(annotations = RestController.class)
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 	
