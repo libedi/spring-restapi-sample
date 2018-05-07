@@ -1,7 +1,10 @@
 package com.libedi.demo.customer.control;
 
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -32,6 +35,8 @@ import com.libedi.demo.framework.model.ValidationMarker.Update;
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
+	
+	private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
 	private final CustomerService customerService;
 	
@@ -104,6 +109,12 @@ public class CustomerController {
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteCustomer(@PathVariable("id") final int customerId) {
 		this.customerService.deleteCustomer(customerId);
+	}
+	
+	@PostMapping("/test")
+	@ResponseStatus(HttpStatus.OK)
+	public void test(@RequestBody final Map<String, Object> map) {
+		map.keySet().stream().forEach(logger::info);
 	}
 	
 }
