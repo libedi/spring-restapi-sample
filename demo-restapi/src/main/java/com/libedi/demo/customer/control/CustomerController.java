@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.libedi.demo.common.exception.ResourceConflictException;
 import com.libedi.demo.customer.model.Customer;
 import com.libedi.demo.customer.service.CustomerService;
+import com.libedi.demo.framework.model.NotEmpty;
+import com.libedi.demo.framework.model.NotNull;
+import com.libedi.demo.framework.model.Pattern;
 import com.libedi.demo.framework.model.ValidationMarker.Create;
 import com.libedi.demo.framework.model.ValidationMarker.Update;
 
@@ -111,8 +114,15 @@ public class CustomerController {
 		this.customerService.deleteCustomer(customerId);
 	}
 	
+	/**
+	 * custom Map validate annotation
+	 * @param map
+	 */
 	@PostMapping("/test")
 	@ResponseStatus(HttpStatus.OK)
+	@NotNull({"test1", "test2", "test3"})
+	@NotEmpty("test2")
+	@Pattern(value = {"test3"}, regExp = "^[0-9]*$")
 	public void test(@RequestBody final Map<String, Object> map) {
 		map.keySet().stream().forEach(logger::info);
 	}
