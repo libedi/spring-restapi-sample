@@ -47,40 +47,39 @@ public class ValidAspect {
 	public void validateParameter(JoinPoint joinPoint) {
 		final MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		// access paramMap
-		Arrays.stream(joinPoint.getArgs()).filter(o -> o instanceof Map).map(o -> {
-			return (Map<String, Object>) o;
-		}).findFirst().ifPresent(map -> {
+		Arrays.stream(joinPoint.getArgs()).filter(o -> o instanceof Map).map(o -> (Map<String, Object>) o).findFirst().ifPresent(map -> {
 			for(Annotation annotation : signature.getMethod().getAnnotations()) {
 				// not null validation
 				if (ClassUtils.isAssignable(annotation.annotationType(), NotNull.class)) {
 					logger.info("NotNull annotaion");
 					final NotNull notNull = (NotNull) annotation;
-					Arrays.stream(notNull.value()).forEach(key -> {
+					for(String key : notNull.value()) {
 						if (map.containsKey(key) == false || map.get(key) == null) {
 							throw new IllegalArgumentException("Value is null. : " + key);
 						}
-					});
+					}
 				}
 				// not empty validation 
 				if (ClassUtils.isAssignable(annotation.annotationType(), NotEmpty.class)) {
 					logger.info("NotEmpty annotaion");
 					final NotEmpty notEmpty = (NotEmpty) annotation;
-					Arrays.stream(notEmpty.value()).forEach(key -> {
+					for(String key : notEmpty.value()) {
 						if (map.containsKey(key) == false || StringUtils.isEmpty(map.get(key))) {
 							throw new IllegalArgumentException("Value is empty. : " + key);
 						}
-					});
+					}
 				}
 				// pattern match validation
 				if (ClassUtils.isAssignable(annotation.annotationType(), Pattern.class)) {
 					logger.info("Pattern annotaion");
 					final Pattern pattern = (Pattern) annotation;
-					Arrays.stream(pattern.value()).forEach(key -> {
+					final String regexp = pattern.regExp();
+					for(String key : pattern.value()) {
 						if (map.containsKey(key) == false || (map.get(key) instanceof String) == false
-								|| java.util.regex.Pattern.matches(pattern.regExp(), String.valueOf(map.get(key))) == false) {
+								|| java.util.regex.Pattern.matches(regexp, String.valueOf(map.get(key))) == false) {
 							throw new IllegalArgumentException("Value is not matched. : " + key);
 						}
-					});
+					}
 				}
 			}
 		});
