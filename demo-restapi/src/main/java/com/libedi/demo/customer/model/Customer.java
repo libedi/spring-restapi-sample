@@ -1,5 +1,7 @@
 package com.libedi.demo.customer.model;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -18,7 +20,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class Customer implements Serializable {
+	
+	private static final long serialVersionUID = -8554730116864091497L;
+	
 	@NotNull(groups = Create.class)
 	private Integer customerId;
 	@NotEmpty(groups = {Create.class, Update.class})
