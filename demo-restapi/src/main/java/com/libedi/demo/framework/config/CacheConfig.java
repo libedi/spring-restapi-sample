@@ -31,6 +31,10 @@ public class CacheConfig {
 					 * - TouchedExpiryPolicy	: 접근/생성/수정시간을 기준으로 만료시간 산정.
 					 */
 //					.setExpiryPolicyFactory(TouchedExpiryPolicy.factoryOf(Duration.ONE_HOUR))
+					/*
+					 * true -> value 		: 값으로 저장되어 조회된 캐시가 변경되어도 캐시값은 변경되지 않는다. (default)
+					 * false -> reference	: 레퍼런스로 저장되어 조회된 캐시가 변경되면 캐시의 값도 변경된다.
+					 */
 //					.setStoreByValue(false)
 //					.setStatisticsEnabled(false)
 					);
