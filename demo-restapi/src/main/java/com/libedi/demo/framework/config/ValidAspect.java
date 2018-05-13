@@ -2,6 +2,7 @@ package com.libedi.demo.framework.config;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 
 import org.aspectj.lang.JoinPoint;
@@ -10,6 +11,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.libedi.demo.framework.model.NotEmpty;
@@ -56,7 +58,8 @@ public class ValidAspect {
 				// not empty validation
 				if(method.isAnnotationPresent(NotEmpty.class)) {
 					for(String key : method.getAnnotation(NotEmpty.class).value()) {
-						if (map.containsKey(key) == false || StringUtils.isEmpty(map.get(key))) {
+						if (map.containsKey(key) == false || StringUtils.isEmpty(map.get(key))
+								|| (map.get(key) instanceof Collection && CollectionUtils.isEmpty((Collection<?>) map.get(key)))) {
 							throw new IllegalArgumentException("Value is empty. : " + key);
 						}
 					}
