@@ -1,6 +1,6 @@
 package com.libedi.demo.framework.config;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import com.libedi.demo.framework.model.NotEmpty;
@@ -35,7 +34,7 @@ public class ValidAspect {
 	public void validPoint() {}
 	
 	/**
-	 * parameter validation
+	 * Map validation
 	 * @param joinPoint
 	 */
 	@SuppressWarnings("unchecked")
@@ -45,34 +44,31 @@ public class ValidAspect {
 		// access paramMap
 		Arrays.stream(joinPoint.getArgs()).filter(o -> o instanceof Map).map(o -> (Map<String, Object>) o)
 			.findFirst().ifPresent(map -> {
-				for(Annotation annotation : signature.getMethod().getAnnotations()) {
-					// not null validation
-					if (ClassUtils.isAssignable(annotation.annotationType(), NotNull.class)) {
-						final NotNull notNull = (NotNull) annotation;
-						for(String key : notNull.value()) {
-							if (map.containsKey(key) == false || map.get(key) == null) {
-								throw new IllegalArgumentException("Value is null. : " + key);
-							}
+				final Method method = signature.getMethod();
+				// not null validation
+				if(method.isAnnotationPresent(NotNull.class)) {
+					for(String key : method.getAnnotation(NotNull.class).value()) {
+						if (map.containsKey(key) == false || map.get(key) == null) {
+							throw new IllegalArgumentException("Value is null. : " + key);
 						}
 					}
-					// not empty validation 
-					if (ClassUtils.isAssignable(annotation.annotationType(), NotEmpty.class)) {
-						final NotEmpty notEmpty = (NotEmpty) annotation;
-						for(String key : notEmpty.value()) {
-							if (map.containsKey(key) == false || StringUtils.isEmpty(map.get(key))) {
-								throw new IllegalArgumentException("Value is empty. : " + key);
-							}
+				}
+				// not empty validation
+				if(method.isAnnotationPresent(NotEmpty.class)) {
+					for(String key : method.getAnnotation(NotEmpty.class).value()) {
+						if (map.containsKey(key) == false || StringUtils.isEmpty(map.get(key))) {
+							throw new IllegalArgumentException("Value is empty. : " + key);
 						}
 					}
-					// pattern match validation
-					if (ClassUtils.isAssignable(annotation.annotationType(), Pattern.class)) {
-						final Pattern pattern = (Pattern) annotation;
-						final String regexp = pattern.regExp();
-						for(String key : pattern.value()) {
-							if (map.containsKey(key) == false || (map.get(key) instanceof String) == false
-									|| java.util.regex.Pattern.matches(regexp, String.valueOf(map.get(key))) == false) {
-								throw new IllegalArgumentException("Value is not matched. : " + key);
-							}
+				}
+				// pattern match validation
+				if(method.isAnnotationPresent(Pattern.class)) {
+					final Pattern pattern = method.getAnnotation(Pattern.class);
+					final String regexp = pattern.regExp();
+					for(String key : pattern.value()) {
+						if (map.containsKey(key) == false || (map.get(key) instanceof String) == false
+								|| java.util.regex.Pattern.matches(regexp, String.valueOf(map.get(key))) == false) {
+							throw new IllegalArgumentException("Value is not matched. : " + key);
 						}
 					}
 				}
