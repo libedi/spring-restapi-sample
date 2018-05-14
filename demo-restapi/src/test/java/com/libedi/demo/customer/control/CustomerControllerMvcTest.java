@@ -34,7 +34,7 @@ import com.libedi.demo.customer.service.CustomerService;
  *
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest
+@WebMvcTest(CustomerController.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CustomerControllerMvcTest {
 	
