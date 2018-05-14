@@ -2,6 +2,7 @@ package com.libedi.demo.customer.control;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,7 @@ public class CustomerController {
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Customer getCustomer(@PathVariable("id") final int customerId) {
-		return this.customerService.getCustomer(customerId).orElseThrow(ResourceNotFoundException::new);
+		return Optional.ofNullable(this.customerService.getCustomer(customerId)).orElseThrow(ResourceNotFoundException::new);
 	}
 
 	/**
@@ -80,7 +81,7 @@ public class CustomerController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public void createCustomer(@RequestBody @Validated(Create.class) final Customer customer) {
-		this.customerService.getCustomer(customer.getCustomerId()).ifPresent(c -> {
+		Optional.ofNullable(this.customerService.getCustomer(customer.getCustomerId())).ifPresent(c -> {
 			throw new ResourceConflictException();
 		});
 		this.customerService.createCustomer(customer);
@@ -98,10 +99,9 @@ public class CustomerController {
 	@ResponseStatus(HttpStatus.OK)
 	public Customer updateCustomer(@PathVariable("id") final int customerId,
 			@RequestBody @Validated(Update.class) final Customer customer) {
-		this.customerService.getCustomer(customerId).orElseThrow(ResourceNotFoundException::new);
-		customer.setCustomerId(customerId);
-		this.customerService.updateCustomer(customer);
-		return this.customerService.getCustomer(customerId).get();
+		Optional.ofNullable(this.customerService.getCustomer(customerId)).orElseThrow(ResourceNotFoundException::new);
+		this.customerService.updateCustomer(customerId, customer);
+		return this.customerService.getCustomer(customerId);
 	}
 
 	/**

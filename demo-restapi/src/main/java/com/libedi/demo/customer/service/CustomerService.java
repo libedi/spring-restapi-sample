@@ -1,7 +1,13 @@
 package com.libedi.demo.customer.service;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.cache.annotation.CacheDefaults;
+import javax.cache.annotation.CacheKey;
+import javax.cache.annotation.CachePut;
+import javax.cache.annotation.CacheRemove;
+import javax.cache.annotation.CacheResult;
+import javax.cache.annotation.CacheValue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +22,7 @@ import com.libedi.demo.customer.model.Customer;
  *
  */
 @Service
+@CacheDefaults(cacheName = "customer")
 public class CustomerService {
 	
 	private final CustomerMapper customerMapper;
@@ -30,8 +37,9 @@ public class CustomerService {
 	 * @param customerId
 	 * @return
 	 */
-	public Optional<Customer> getCustomer(final Integer customerId) {
-		return this.customerMapper.selectCustomerList(customerId).stream().findFirst();
+	@CacheResult
+	public Customer getCustomer(@CacheKey final Integer customerId) {
+		return this.customerMapper.selectCustomerList(customerId).stream().findFirst().orElse(null);
 	}
 
 	/**
@@ -53,10 +61,13 @@ public class CustomerService {
 
 	/**
 	 * update customer
+	 * @param customerId
 	 * @param customer
 	 */
 	@Transactional
-	public void updateCustomer(final Customer customer) {
+	@CachePut
+	public void updateCustomer(@CacheKey final int customerId, @CacheValue final Customer customer) {
+		customer.setCustomerId(customerId);
 		this.customerMapper.updateCustomer(customer);
 	}
 
@@ -65,7 +76,8 @@ public class CustomerService {
 	 * @param customerId
 	 */
 	@Transactional
-	public void deleteCustomer(final int customerId) {
+	@CacheRemove
+	public void deleteCustomer(@CacheKey final int customerId) {
 		this.customerMapper.deleteCustomer(customerId);
 	}
 
