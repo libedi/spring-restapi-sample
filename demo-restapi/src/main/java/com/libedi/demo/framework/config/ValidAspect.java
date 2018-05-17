@@ -49,7 +49,7 @@ public class ValidAspect {
 				final Method method = signature.getMethod();
 				// not null validation
 				if(method.isAnnotationPresent(NotNull.class)) {
-					for(String key : method.getAnnotation(NotNull.class).value()) {
+					for(final String key : method.getAnnotation(NotNull.class).value()) {
 						if (map.containsKey(key) == false || map.get(key) == null) {
 							throw new IllegalArgumentException("Value is null. : " + key);
 						}
@@ -57,7 +57,7 @@ public class ValidAspect {
 				}
 				// not empty validation
 				if(method.isAnnotationPresent(NotEmpty.class)) {
-					for(String key : method.getAnnotation(NotEmpty.class).value()) {
+					for(final String key : method.getAnnotation(NotEmpty.class).value()) {
 						if (map.containsKey(key) == false || StringUtils.isEmpty(map.get(key))
 								|| (map.get(key) instanceof Collection && CollectionUtils.isEmpty((Collection<?>) map.get(key)))) {
 							throw new IllegalArgumentException("Value is empty. : " + key);
@@ -68,7 +68,7 @@ public class ValidAspect {
 				if(method.isAnnotationPresent(Pattern.class)) {
 					final Pattern pattern = method.getAnnotation(Pattern.class);
 					final String regexp = pattern.regExp();
-					for(String key : pattern.value()) {
+					for(final String key : pattern.value()) {
 						if (map.containsKey(key) == false || (map.get(key) instanceof String) == false
 								|| java.util.regex.Pattern.matches(regexp, String.valueOf(map.get(key))) == false) {
 							throw new IllegalArgumentException("Value is not matched. : " + key);
