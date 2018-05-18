@@ -3,8 +3,8 @@ package com.libedi.demo.framework.handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  *
  */
 @Component
-public class ApplicationStartupListener implements ApplicationListener<ContextRefreshedEvent> {
+public class ApplicationStartupListener {
 	
 	private final Logger logger = LoggerFactory.getLogger(ApplicationStartupListener.class);
 	
@@ -26,7 +26,7 @@ public class ApplicationStartupListener implements ApplicationListener<ContextRe
 		this.handlerMapping = handlerMapping;
 	}
 
-	@Override
+	@EventListener
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		handlerMapping.getHandlerMethods().keySet().forEach(key -> key.getPatternsCondition().getPatterns().forEach(logger::info));
 	}
