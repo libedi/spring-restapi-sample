@@ -22,12 +22,12 @@ public class ApplicationStartupListener {
 	private final RequestMappingHandlerMapping handlerMapping;
 	
 	@Autowired
-	public ApplicationStartupListener(RequestMappingHandlerMapping handlerMapping) {
+	public ApplicationStartupListener(final RequestMappingHandlerMapping handlerMapping) {
 		this.handlerMapping = handlerMapping;
 	}
 
 	@EventListener
-	public void onApplicationEvent(ContextRefreshedEvent event) {
+	public void handleContextRefreshedEvent(final ContextRefreshedEvent event) {
 		handlerMapping.getHandlerMethods().keySet().forEach(key -> key.getPatternsCondition().getPatterns().forEach(logger::info));
 	}
 
