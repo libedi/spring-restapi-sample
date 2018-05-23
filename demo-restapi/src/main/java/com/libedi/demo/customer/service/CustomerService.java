@@ -50,7 +50,7 @@ public class CustomerService {
 	 * @param customerId
 	 * @return
 	 */
-	@CacheResult
+//	@CacheResult
 	public Customer getCustomer(@CacheKey final Integer customerId) {
 		// access thread-scope bean using ThreadLocalTargetSource
 		logger.info("ThreadScope value : {}", ((ThreadScopeModel) threadLocalTargetSource.getTarget()).getValue());

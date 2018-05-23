@@ -68,9 +68,9 @@ public class CustomerController {
 	public Customer getCustomer(@PathVariable("id") final int customerId) {
 		// get thread-scope bean using ThreadLocalTargetSource
 		ThreadScopeModel model = (ThreadScopeModel) threadLocalTargetSource.getTarget();
-		model.setValue("test");
+		model.setValue("test" + customerId);
 		// get request-scope bean
-		requestScopeModel.setValue("test");
+		requestScopeModel.setValue("test" + customerId);
 		return Optional.ofNullable(this.customerService.getCustomer(customerId)).orElseThrow(ResourceNotFoundException::new);
 	}
 
