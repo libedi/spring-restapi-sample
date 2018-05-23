@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.target.ThreadLocalTargetSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ import com.libedi.demo.customer.service.CustomerService;
 import com.libedi.demo.framework.model.NotEmpty;
 import com.libedi.demo.framework.model.NotNull;
 import com.libedi.demo.framework.model.Pattern;
+import com.libedi.demo.framework.model.RequestScopeModel;
+import com.libedi.demo.framework.model.ThreadScopeModel;
 import com.libedi.demo.framework.model.ValidationMarker.Create;
 import com.libedi.demo.framework.model.ValidationMarker.Update;
 
@@ -45,6 +48,12 @@ public class CustomerController {
 	private final CustomerService customerService;
 	
 	@Autowired
+	private ThreadLocalTargetSource threadLocalTargetSource;
+	
+	@Autowired
+	private RequestScopeModel requestScopeModel;
+	
+	@Autowired
 	public CustomerController(final CustomerService customerService) {
 		this.customerService = customerService;
 	}
@@ -57,6 +66,11 @@ public class CustomerController {
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Customer getCustomer(@PathVariable("id") final int customerId) {
+		// get thread-scope bean using ThreadLocalTargetSource
+		ThreadScopeModel model = (ThreadScopeModel) threadLocalTargetSource.getTarget();
+		model.setValue("test");
+		// get request-scope bean
+		requestScopeModel.setValue("test");
 		return Optional.ofNullable(this.customerService.getCustomer(customerId)).orElseThrow(ResourceNotFoundException::new);
 	}
 
