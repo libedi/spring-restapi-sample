@@ -76,13 +76,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	}
 	
 	/**
-	 * declare request-scope bean
+	 * declare request-scope bean ==> @RequestScope
 	 * @return
 	 */
-	@Bean
-	@Scope(value =  WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-	public RequestScopeModel requestScopeModel() {
-		return new RequestScopeModel();
-	}
+//	@Bean
+//	@Scope(value =  WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+//	public RequestScopeModel requestScopeModel() {
+//		return new RequestScopeModel();
+//	}
 	
 }
