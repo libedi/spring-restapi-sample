@@ -1,5 +1,6 @@
 package com.libedi.demo.framework.model;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.Data;
  *
  */
 @RequestScope
+@Component
 @Data
 public class RequestScopeModel {
 	private String value;
