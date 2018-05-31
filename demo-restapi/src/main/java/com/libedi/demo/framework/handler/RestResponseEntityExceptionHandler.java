@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -30,7 +32,8 @@ import com.libedi.demo.common.model.ErrorResponse;
  * @author Sangjun, Park
  *
  */
-@RestControllerAdvice
+@RestControllerAdvice(annotations = RestController.class)
+@Order(1)
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	private final Logger logger = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
