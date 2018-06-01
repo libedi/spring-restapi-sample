@@ -2,11 +2,12 @@ package com.libedi.demo.framework.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * ApplicationStartupListener
@@ -15,16 +16,17 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  *
  */
 @Component
+@RequiredArgsConstructor
 public class ApplicationStartupListener {
 	
 	private final Logger logger = LoggerFactory.getLogger(ApplicationStartupListener.class);
 	
 	private final RequestMappingHandlerMapping handlerMapping;
 	
-	@Autowired
-	public ApplicationStartupListener(final RequestMappingHandlerMapping handlerMapping) {
-		this.handlerMapping = handlerMapping;
-	}
+//	@Autowired
+//	public ApplicationStartupListener(final RequestMappingHandlerMapping handlerMapping) {
+//		this.handlerMapping = handlerMapping;
+//	}
 
 	@EventListener
 	public void handleContextRefreshedEvent(final ContextRefreshedEvent event) {

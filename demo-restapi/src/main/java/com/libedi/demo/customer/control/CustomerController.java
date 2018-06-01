@@ -34,6 +34,8 @@ import com.libedi.demo.framework.model.ThreadScopeModel;
 import com.libedi.demo.framework.model.ValidationMarker.Create;
 import com.libedi.demo.framework.model.ValidationMarker.Update;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * CustomerController for REST API
  * @author Sangjun, Park
@@ -41,6 +43,7 @@ import com.libedi.demo.framework.model.ValidationMarker.Update;
  */
 @RestController
 @RequestMapping("/customers")
+@RequiredArgsConstructor
 public class CustomerController {
 	
 	private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
@@ -53,10 +56,10 @@ public class CustomerController {
 	@Autowired
 	private RequestScopeModel requestScopeModel;
 	
-	@Autowired
-	public CustomerController(final CustomerService customerService) {
-		this.customerService = customerService;
-	}
+//	@Autowired
+//	public CustomerController(final CustomerService customerService) {
+//		this.customerService = customerService;
+//	}
 
 	/**
 	 * get Customer

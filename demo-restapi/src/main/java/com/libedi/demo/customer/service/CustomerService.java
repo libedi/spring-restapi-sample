@@ -21,6 +21,8 @@ import com.libedi.demo.customer.model.Customer;
 import com.libedi.demo.framework.model.RequestScopeModel;
 import com.libedi.demo.framework.model.ThreadScopeModel;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * CustomerService
  * @author Sangjun, Park
@@ -28,6 +30,7 @@ import com.libedi.demo.framework.model.ThreadScopeModel;
  */
 @Service
 @CacheDefaults(cacheName = "customer")
+@RequiredArgsConstructor
 public class CustomerService {
 	
 	private final Logger logger = LoggerFactory.getLogger(CustomerService.class);
@@ -40,10 +43,10 @@ public class CustomerService {
 	@Autowired
 	private RequestScopeModel requestScopeModel;
 	
-	@Autowired
-	public CustomerService(final CustomerMapper customerMapper) {
-		this.customerMapper = customerMapper;
-	}
+//	@Autowired
+//	public CustomerService(final CustomerMapper customerMapper) {
+//		this.customerMapper = customerMapper;
+//	}
 
 	/**
 	 * get customer
