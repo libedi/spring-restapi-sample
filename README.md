@@ -5,3 +5,4 @@
 * EhCache 3
 * JCache (JSR-107)
 * Lombok
+* Jasypt
