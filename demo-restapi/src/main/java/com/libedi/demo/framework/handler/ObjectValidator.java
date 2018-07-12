@@ -30,15 +30,17 @@ public class ObjectValidator implements ConstraintValidator<ObjectValid, Object>
 
 	@Override
 	public boolean isValid(Object value, ConstraintValidatorContext context) {
-		final Set<ConstraintViolation<Object>> constraintViolations = validator.validate(value, groups);
-		if(constraintViolations.size() > 0) {
-			constraintViolations.stream().findFirst().ifPresent(cv -> {
-				context.disableDefaultConstraintViolation();
-				context.buildConstraintViolationWithTemplate(cv.getMessage())
-					.addPropertyNode(cv.getPropertyPath().toString())
-					.addConstraintViolation();
-			});
-			return false;
+		if(value != null) {
+			final Set<ConstraintViolation<Object>> constraintViolations = validator.validate(value, groups);
+			if(constraintViolations.size() > 0) {
+				constraintViolations.stream().findFirst().ifPresent(cv -> {
+					context.disableDefaultConstraintViolation();
+					context.buildConstraintViolationWithTemplate(cv.getMessage())
+						.addPropertyNode(cv.getPropertyPath().toString())
+						.addConstraintViolation();
+				});
+				return false;
+			}
 		}
 		return true;
 	}
