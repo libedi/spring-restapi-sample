@@ -44,7 +44,6 @@ public class UserController {
 	@GetMapping("/name/{id}")
 	@ResponseBody
 	public String getUsername(@PathVariable("id") UserId userId) {
-//		UserId userId = UserId.fromValue(id);
 		return this.factoryBean.getUserService(userId).getUser();
 	}
 	
