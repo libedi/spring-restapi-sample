@@ -39,8 +39,8 @@ public class JasyptTest {
             }
         }
         System.out.println("Supported");
-        supported.forEach((String alg) -> System.out.println("   " + alg)); 
+        supported.forEach(alg -> System.out.println("   " + alg)); 
         System.out.println("Unsupported");
-        unsupported.forEach((String alg) -> System.out.println("   " + alg)); 
+        unsupported.forEach(alg -> System.out.println("   " + alg)); 
     }
 }
