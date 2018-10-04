@@ -90,20 +90,23 @@ public class ValidAspect {
 	private Validator validator;
 	
 	@Pointcut("execution(* com.libedi.demo..*Controller.*(..))")
-	public void listValidPoint() {}
+	public void collectionValidPoint() {}
 	
-	@Before("listValidPoint()")
-	public void validateListParameter(final JoinPoint joinPoint) {
+	@Before("collectionValidPoint()")
+	public void validateCollectionParameter(final JoinPoint joinPoint) {
 		final Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
 		final Parameter[] parameters = method.getParameters();
 		final Object[] args = joinPoint.getArgs();
 		for (int i = 0, len = args.length; i < len; i++) {
-			if (args[i] instanceof Collection && parameters[i].isAnnotationPresent(CollectionValid.class)) {
-				final Collection<?> col = (Collection<?>) args[i];
+			if (parameters[i].isAnnotationPresent(CollectionValid.class)
+					&& (args[i] instanceof Collection || args[i].getClass().isArray())) {
+				
+				final Collection<?> col = args[i] instanceof Collection ? (Collection<?>) args[i]
+						: CollectionUtils.arrayToList(args[i]);
 				final CollectionValid valid = parameters[i].getAnnotation(CollectionValid.class);
 				col.forEach(obj -> {
 					final Set<ConstraintViolation<Object>> constraintViolations = this.validator.validate(obj,
-							ArrayUtils.isEmpty(valid.value()) ? valid.groups() : valid.value());
+							ArrayUtils.isEmpty(valid.value()) == false ? valid.value() : valid.groups());
 					constraintViolations.forEach(cv -> {
 						throw new IllegalArgumentException(cv.getPropertyPath().toString() + ":" + cv.getMessage());
 					});
