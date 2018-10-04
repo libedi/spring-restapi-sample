@@ -1,19 +1,27 @@
 package com.libedi.demo.framework.config;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.ehcache.impl.internal.classes.commonslang.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.libedi.demo.framework.model.CollectionValid;
 import com.libedi.demo.framework.model.NotEmpty;
 import com.libedi.demo.framework.model.NotNull;
 import com.libedi.demo.framework.model.Pattern;
@@ -76,6 +84,33 @@ public class ValidAspect {
 					}
 				}
 		});
+	}
+	
+	@Autowired
+	private Validator validator;
+	
+	@Pointcut("execution(* com.libedi.demo..*Controller.*(..))")
+	public void listValidPoint() {}
+	
+	@Before("listValidPoint()")
+	public void validateListParameter(final JoinPoint joinPoint) {
+		final Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+		final Parameter[] parameters = method.getParameters();
+		final Object[] args = joinPoint.getArgs();
+		for (int i = 0, len = args.length; i < len; i++) {
+			if (args[i] instanceof Collection && parameters[i].isAnnotationPresent(CollectionValid.class)) {
+				final Collection<?> col = (Collection<?>) args[i];
+				final CollectionValid valid = parameters[i].getAnnotation(CollectionValid.class);
+				col.forEach(obj -> {
+					final Set<ConstraintViolation<Object>> constraintViolations = this.validator.validate(obj,
+							ArrayUtils.isEmpty(valid.value()) ? valid.groups() : valid.value());
+					constraintViolations.forEach(cv -> {
+						throw new IllegalArgumentException(cv.getPropertyPath().toString() + ":" + cv.getMessage());
+					});
+				});
+				break;
+			}
+		}
 	}
 	
 }

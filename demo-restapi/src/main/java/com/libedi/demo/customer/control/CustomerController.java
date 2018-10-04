@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.libedi.demo.common.exception.ResourceConflictException;
 import com.libedi.demo.customer.model.Customer;
 import com.libedi.demo.customer.service.CustomerService;
+import com.libedi.demo.framework.model.CollectionValid;
 import com.libedi.demo.framework.model.NotEmpty;
 import com.libedi.demo.framework.model.NotNull;
 import com.libedi.demo.framework.model.Pattern;
@@ -147,6 +148,16 @@ public class CustomerController {
 	@Pattern(value = {"test3"}, regExp = "^[0-9]*$")
 	public void test(@RequestBody final Map<String, Object> map) {
 		map.keySet().stream().forEach(logger::info);
+	}
+	
+	/**
+	 * collection parameter validation test
+	 * @param customerList
+	 */
+	@PostMapping("/test/list")
+	@ResponseStatus(HttpStatus.OK)
+	public void testCollectionValidation(@RequestBody @CollectionValid(Create.class) final List<Customer> customerList) {
+		logger.info(customerList.toString());
 	}
 	
 }
